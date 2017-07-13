@@ -84,6 +84,7 @@ void accelerationButtonValueChanged()
 	send_Frame(frame750);
 
 	if (acceleration) {
+		printf("modalità accelerazione /n");
 		/*
 		avvio timer
 		stopTimer(TC1, 0, TC3_IRQn);
@@ -201,10 +202,14 @@ void buttonStates()
 	frame750.time = timer;
 	frame750.id = 750;
 	send_Frame(frame750);
+	if (debug == 1)printf("Debug Mode /n");
+	if (datalog == 1)printf("Datalog Mode /n");
+	if (telemetry == 1)printf("Telemetry Mode /n");
 }
 
 void closeLap()
 {
+	printf("lap closed /n");
 	lap_time=(uint32_t)millis();
 	lapNumber++;
 	frame750.data[1] = 1;
