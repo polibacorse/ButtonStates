@@ -3,9 +3,9 @@
 #include <wiringPi.h>
 #include <stdint.h>
 #include <string.h>
-//#include <mosquitto.h>
-//#include <json-c/json.h>
-//#include <stdbool.h>
+#include <mosquitto.h>
+#include <json-c/json.h>
+#include <stdbool.h>
 
 
 
@@ -68,6 +68,7 @@ void accelerationButtonValueChanged(){
     telemetry=!(bool)digitalRead(telemetryButton);
     frame750.data[0]= (((bool)acceleration << 7) || ((bool) debug << 6) || ((bool)datalog << 5) || ((bool) telemetry << 4) ) || 0x00;
     frame750.time=timer;
+    frame750.id=750;
     send_Frame(frame750); 
 
   
@@ -192,21 +193,25 @@ void buttonStates(){
     telemetry=!(bool)digitalRead(telemetryButton);
     frame750.data[0] = (((bool)acceleration << 7) || ((bool) debug << 6) || ((bool)datalog << 5) || ((bool) telemetry << 4) ) || 0x00;
     frame750.time=timer;
-    send_Frame(frame.750);
+    frame750.id=750;
+    send_Frame(frame750);
     
 }
 
 void closeLap(){
     lap_time=(uint32_t)millis();
     lapNumber++;
-    frame.data750[1] = 1;
-    send_Frame(750,lap_time);
+    frame750.data[1] = 1;
+    frame750.id = 750;
+    frame750.time= lap_time();
+    send_Frame(frame750);
     if(acceleration){
       lapNumber = 1;
       time50_75m = (uint32_t)millis() - accStartTime;
       frame751.data[6] = time0_75m >>8;
       frame751.data[7] = time0_75m; 
       frame751.time=lap_time;
+      frame751.id=751;
       send_Frame(frame751);
     }
 }
@@ -224,7 +229,7 @@ void NgearvalueChanged(){
     int rc=0;
     rc = mosquitto_connect(mosq, host, port, 60); 
     printf("connessione avvenuta");
-}/*
+}*/
 
 void message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
 {
