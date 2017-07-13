@@ -18,10 +18,10 @@ const int lapEndButton=26;
 const int N_GR=9;
 const int SH_LT=8;
 
-uint8_t acceleration=0;
-uint8_t debug=0;
-uint8_t datalog=0;
-uint8_t telemetry=0;
+bool acceleration=0;
+bool debug=0;
+bool datalog=0;
+bool telemetry=0;
 
 const int CD_B=25;
 const int  CD_C=21;
@@ -50,7 +50,7 @@ struct can_frame {
 
     unsigned short int id;
     unsigned int time;
-    char data;
+    char data[8];
 };
     
 struct can_frame frame750;
